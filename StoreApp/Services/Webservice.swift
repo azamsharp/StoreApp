@@ -12,7 +12,15 @@ enum NetworkError: Error {
     case decodingError
 }
 
-class Webservice {
+// Since, this is an unmanaged dependency we can benefit from mocking.
+// Unmanaged dependency means that this is a third party dependency that I have no control over
+protocol WebserviceProtocol {
+    func saveCategory(category: Category) async throws -> Category
+    func getCategories() async throws -> [Category]
+}
+
+
+class Webservice: WebserviceProtocol {
     
     func saveCategory(category: Category) async throws -> Category {
         
@@ -35,7 +43,7 @@ class Webservice {
             throw NetworkError.decodingError
         }
         
-        return category 
+        return category
     }
     
     func getCategories() async throws -> [Category] {

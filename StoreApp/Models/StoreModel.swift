@@ -11,8 +11,12 @@ import Foundation
 @MainActor
 class StoreModel: ObservableObject {
     
-    let webservice = Webservice()
+    let webservice: WebserviceProtocol
     @Published var categories: [Category] = []
+    
+    init(webservice: WebserviceProtocol) {
+        self.webservice = webservice
+    }
     
     func populateCategories() async throws {
         categories = try await webservice.getCategories()
